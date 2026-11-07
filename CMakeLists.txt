@@ -144,12 +144,23 @@ endif()
 add_executable(main ${MAIN_SOURCES})
 target_compile_definitions(main PRIVATE LV_CONF_INCLUDE_SIMPLE)
 target_link_libraries(main ${MAIN_LIBS})
-target_sources(main PRIVATE ${CMAKE_SOURCE_DIR}/../ui/ui.c)
-target_sources(main PRIVATE ${CMAKE_SOURCE_DIR}/../ui/ecrans/tableau_de_bord.c)
-target_sources(main PRIVATE ${CMAKE_SOURCE_DIR}/../ui/tuiles/horloge.c)
-target_sources(main PRIVATE ${CMAKE_SOURCE_DIR}/../ui/polices/police_7seg_64.c)
-target_sources(main PRIVATE ${CMAKE_SOURCE_DIR}/../ui/tuiles/date.c)
+# Tous les fichiers .c du dossier ui/ (partagé avec la carte) sont compilés :
+# plus besoin de modifier ce fichier quand on ajoute une tuile.
+file(GLOB_RECURSE UI_SOURCES CONFIGURE_DEPENDS ${CMAKE_SOURCE_DIR}/../ui/*.c)
+target_sources(main PRIVATE ${UI_SOURCES})
 target_include_directories(main PRIVATE ${CMAKE_SOURCE_DIR}/../ui)
+
+# Partie propre au PC de la « cuisine » (réseau avec libcurl), dans le dossier pc/
+file(GLOB_RECURSE PC_SOURCES CONFIGURE_DEPENDS ${CMAKE_SOURCE_DIR}/../pc/*.c)
+target_sources(main PRIVATE ${PC_SOURCES})
+
+# Bibliothèques pour la météo : libcurl (HTTPS) et cJSON (lecture du JSON)
+# sudo apt install libcurl4-openssl-dev libcjson-dev
+find_package(CURL REQUIRED)
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(CJSON REQUIRED libcjson)
+target_include_directories(main PRIVATE ${CJSON_INCLUDE_DIRS})
+target_link_libraries(main CURL::libcurl ${CJSON_LIBRARIES})
 
 # On Windows, GUI applications do not show a console by default,
 # which hides log output. This ensures a console is available for logging.
