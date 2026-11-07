@@ -146,6 +146,9 @@ target_compile_definitions(main PRIVATE LV_CONF_INCLUDE_SIMPLE)
 target_link_libraries(main ${MAIN_LIBS})
 target_sources(main PRIVATE ${CMAKE_SOURCE_DIR}/../ui/ui.c)
 target_sources(main PRIVATE ${CMAKE_SOURCE_DIR}/../ui/ecrans/tableau_de_bord.c)
+target_sources(main PRIVATE ${CMAKE_SOURCE_DIR}/../ui/tuiles/horloge.c)
+target_sources(main PRIVATE ${CMAKE_SOURCE_DIR}/../ui/polices/police_7seg_64.c)
+target_sources(main PRIVATE ${CMAKE_SOURCE_DIR}/../ui/tuiles/date.c)
 target_include_directories(main PRIVATE ${CMAKE_SOURCE_DIR}/../ui)
 
 # On Windows, GUI applications do not show a console by default,
