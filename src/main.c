@@ -69,30 +69,10 @@ int main(int argc, char **argv)
   lv_display_t *disp = sdl_hal_init(LARGEUR_CARTE, HAUTEUR_CARTE);
   lv_sdl_window_set_resizeable(disp, false);
 
-  /* Run the default demo */
-  /* To try a different demo or example, replace this with one of: */
-  /* - lv_demo_benchmark(); */
-  /* - lv_demo_stress(); */
-  /* - lv_example_label_1(); */
-  /* - etc. */
-  // lv_demo_widgets();
+  /* Pour essayer une démo LVGL à la place : lv_demo_widgets(); */
 
-  /**
-
-#if LV_BUILD_EXAMPLES
-
-/**
- * @title Hello world label
- * @brief Paint the screen background and center a label on it.
- *
- * The view sets its own `style_bg_color` to a dark teal and `style_text_color`
- * to white. The label sets no color of its own — it inherits white from the
- * view — and `align="center"` places it in the middle of the display.
- */
-
-    ui_init();
-
-
+  /* Notre interface (dossier ../ui) */
+  ui_init();
 
   while(1) {
     /* Periodically call the lv_task handler.
