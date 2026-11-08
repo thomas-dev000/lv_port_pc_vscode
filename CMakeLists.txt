@@ -150,6 +150,15 @@ file(GLOB_RECURSE UI_SOURCES CONFIGURE_DEPENDS ${CMAKE_SOURCE_DIR}/../ui/*.c)
 target_sources(main PRIVATE ${UI_SOURCES})
 target_include_directories(main PRIVATE ${CMAKE_SOURCE_DIR}/../ui)
 
+# Profil de la tablette (voir ui/config/tablette.h) : cmake -B build -DTABLETTE=piece_de_vie
+set(TABLETTE "cuisine" CACHE STRING "Profil de tablette : piece_de_vie ou cuisine")
+set_property(CACHE TABLETTE PROPERTY STRINGS piece_de_vie cuisine)
+if (TABLETTE STREQUAL "cuisine")
+    target_compile_definitions(main PRIVATE TABLETTE_CUISINE)
+elseif (NOT TABLETTE STREQUAL "piece_de_vie")
+    message(FATAL_ERROR "TABLETTE inconnu : ${TABLETTE} (piece_de_vie ou cuisine)")
+endif()
+
 # Partie propre au PC de la « cuisine » (réseau avec libcurl), dans le dossier pc/
 file(GLOB_RECURSE PC_SOURCES CONFIGURE_DEPENDS ${CMAKE_SOURCE_DIR}/../pc/*.c)
 target_sources(main PRIVATE ${PC_SOURCES})
